@@ -9,8 +9,13 @@ RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
 
 WORKDIR /app/src
-COPY ./example-app .
-RUN composer install
+COPY ./example-app/composer.* ./
+RUN mkdir -p ./database/seeds && mkdir -p ./database/factories && \
+    composer install 
 
-CMD ["php", "artisan", "serve", "--host", "0.0.0.0"]
+COPY ./example-app .
+
+CMD ["/app/src/entrypoint.sh"]
+
+
 
